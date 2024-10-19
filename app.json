@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "FantSticker",
-    "slug": "FantSticker",
+    "slug": "fantsticker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "FantSticker",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
