@@ -1,37 +1,31 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
+import { useFonts } from "expo-font";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+SplashScreen.preventAutoHideAsync();
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const RootLayout = () => {
+  const [fontsLoaded, error] = useFonts({
+    "ClashDisplay-Bold": require("../../assets/fonts/ClashDisplay-Bold.ttf"),
+    "ClashDisplay-Semibold": require("../../assets/fonts/ClashDisplay-Semibold.ttf"),
+    "ClashDisplay-Medium": require("../../assets/fonts/ClashDisplay-Medium.ttf"),
+    "ClashDisplay-Regular": require("../../assets/fonts/ClashDisplay-Regular.ttf"),
+    "ClashDisplay-Light": require("../../assets/fonts/ClashDisplay-Light.ttf"),
+    "ClashDisplay-Extralight": require("../../assets/fonts/ClashDisplay-Bold.ttf"),
+  });
 
+  useEffect(() => {
+    if (error) throw error;
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, error]);
+
+  if (!fontsLoaded && !error) return null;
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+    </Stack>
   );
-}
+};
+
+export default RootLayout;

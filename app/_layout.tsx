@@ -1,37 +1,31 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import { StyleSheet, Text, View } from "react-native";
+import { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
+import { useFonts } from "expo-font";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+const RootLayout = () => {
+  const [fontsLoaded, error] = useFonts({
+    "ClashDisplay-Bold": require("../assets/fonts/ClashDisplay-Bold.ttf"),
+    "ClashDisplay-Semibold": require("../assets/fonts/ClashDisplay-Semibold.ttf"),
+    "ClashDisplay-Medium": require("../assets/fonts/ClashDisplay-Medium.ttf"),
+    "ClashDisplay-Regular": require("../assets/fonts/ClashDisplay-Regular.ttf"),
+    "ClashDisplay-Light": require("../assets/fonts/ClashDisplay-Light.ttf"),
+    "ClashDisplay-Extralight": require("../assets/fonts/ClashDisplay-Bold.ttf"),
   });
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
+    if (error) throw error;
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, error]);
 
-  if (!loaded) {
-    return null;
-  }
-
+  if (!fontsLoaded && !error) return null;
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+    </Stack>
   );
-}
+};
+
+export default RootLayout;
